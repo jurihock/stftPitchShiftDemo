@@ -10,7 +10,7 @@ run() {
 
   echo ${dst}
 
-  stftpitchshift -r -w 2048 -v 32 -i "${src}" -o "${dst}" $@
+  ./stftpitchshift -r -w 2048 -v 32 -i "${src}" -o "${dst}" $@
 
 }
 
@@ -26,3 +26,6 @@ run -q 1 -p 2
 
 run -q 0 -p 1,1.5,2
 run -q 1 -p 1,1.5,2
+
+run -t -q 1 -p 0.8
+run -t -q 1 -p 1.2
