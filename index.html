@@ -45,7 +45,7 @@
                 </div>
               </div>
               <div class="card-footer">
-                <p class="card-text text-start text-muted">orig</p>
+                <p class="card-text text-start text-muted">origin</p>
               </div>
             </div>
 
@@ -54,11 +54,9 @@
       </section>
 
       <div class="album py-5 bg-light">
-        <div class="container">
+        <div id="container" class="container">
 
-          <div id="cards" class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2 row-cols-xl-3 g-3">
-            <!-- see main function below -->
-          </div>
+          <!-- ... -->
 
         </div>
       </div>
@@ -79,30 +77,53 @@
     <script>
       function main() {
 
-        var cards = document.getElementById('cards');
+        var container = document.getElementById('container');
 
-        records.forEach(function (record) {
+        Object.keys(data).forEach(function (category, index) {
 
-          var card = document.createElement('div');
+          var title = document.createElement('h2');
 
-          card.classList.add('col');
+          title.classList.add('mb-4');
 
-          card.innerHTML = [
-            `<div class="card shadow-sm">`,
-            `  <div class="card-body">`,
-            `    <div class="audio">`,
-            `      <audio>`,
-            `        <source src="${record.file}" type="audio/wav"/>`,
-            `      </audio>`,
-            `    </div>`,
-            `  </div>`,
-            `  <div class="card-footer">`,
-            `    <p class="card-text text-start text-muted"><samp>${record.args}</samp></p>`,
-            `  </div>`,
-            `</div>`
-          ].join('');
+          if (index > 0)
+          {
+            title.classList.add('mt-5');
+          }
 
-          cards.appendChild(card);
+          title.innerText = category;
+
+          container.appendChild(title);
+
+          var cards = document.createElement('div');
+
+          cards.classList.add('row', 'row-cols-1', 'row-cols-sm-1', 'row-cols-md-2', 'row-cols-lg-2', 'row-cols-xl-3', 'g-3');
+
+          data[category].forEach(function (record) {
+
+            var card = document.createElement('div');
+
+            card.classList.add('col');
+
+            card.innerHTML = [
+              `<div class="card shadow-sm">`,
+              `  <div class="card-body">`,
+              `    <div class="audio">`,
+              `      <audio>`,
+              `        <source src="${record.file}" type="audio/wav"/>`,
+              `      </audio>`,
+              `    </div>`,
+              `  </div>`,
+              `  <div class="card-footer">`,
+              `    <p class="card-text text-start text-muted"><samp>${record.args}</samp></p>`,
+              `  </div>`,
+              `</div>`
+            ].join('');
+
+            cards.appendChild(card);
+
+          });
+
+          container.appendChild(cards);
 
         });
 
