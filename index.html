@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+
+    <title>stftPitchShift</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/greghub/green-audio-player/dist/css/green-audio-player.min.css">
+
+    <style>
+      .audio {
+        width: 100%;
+      }
+      .green-audio-player {
+        background: none;
+        box-shadow: none;
+        border: none;
+        padding: 0;
+      }
+    </style>
+
+  </head>
+
+  <body>
+
+    <main>
+
+      <section class="py-5 text-center container">
+        <div class="row py-lg-5">
+          <div class="col-lg-6 col-md-8 mx-auto">
+
+            <h1 class="fw-light">stftPitchShift</h1>
+            <p class="lead text-muted">STFT based multi pitch shifting <br> with optional formant preservation</p>
+
+            <div class="card shadow-sm mt-5">
+              <div class="card-body">
+                <div class="audio">
+                  <audio>
+                    <source src="data/voice.wav" type="audio/wav"/>
+                  </audio>
+                </div>
+              </div>
+              <div class="card-footer">
+                <p class="card-text text-start text-muted">orig</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <div class="album py-5 bg-light">
+        <div class="container">
+
+          <div id="cards" class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2 row-cols-xl-3 g-3">
+            <!-- see main function below -->
+          </div>
+
+        </div>
+      </div>
+
+    </main>
+
+    <footer class="text-muted py-5">
+      <div class="container">
+        <p>View on <a href="https://github.com/jurihock/stftPitchShift">GitHub</a></p>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/greghub/green-audio-player/dist/js/green-audio-player.min.js"></script>
+
+    <script src="index.js"></script>
+
+    <script>
+      function main() {
+
+        var cards = document.getElementById('cards');
+
+        records.forEach(function (record) {
+
+          var card = document.createElement('div');
+
+          card.classList.add('col');
+
+          card.innerHTML = [
+            `<div class="card shadow-sm">`,
+            `  <div class="card-body">`,
+            `    <div class="audio">`,
+            `      <audio>`,
+            `        <source src="${record.file}" type="audio/wav"/>`,
+            `      </audio>`,
+            `    </div>`,
+            `  </div>`,
+            `  <div class="card-footer">`,
+            `    <p class="card-text text-start text-muted"><samp>${record.args}</samp></p>`,
+            `  </div>`,
+            `</div>`
+          ].join('');
+
+          cards.appendChild(card);
+
+        });
+
+        GreenAudioPlayer.init({
+          selector: '.audio',
+          stopOthersOnPlay: true
+        });
+
+      }
+      document.addEventListener('DOMContentLoaded', main, false);
+    </script>
+
+  </body>
+
+</html>
