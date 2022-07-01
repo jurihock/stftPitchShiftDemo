@@ -24,8 +24,11 @@ run -q 1 -p 0.75
 run -q 1 -p 1.5
 run -q 1 -p 2
 
-run -q 0 -p 1,1.5,2
-run -q 1 -p 1,1.5,2
+run -q 0 -p 1,1.25,1.5
+run -q 1 -p 1,1.25,1.5
 
-run -t -q 1 -p 0.8
-run -t -q 1 -p 1.2
+run -q 1 -p 1 -t 0.8
+run -q 1 -p 1 -t 1.2
+
+run -q 1 -p 1,1.25,1.5 -t 0.8
+run -q 1 -p 1,1.25,1.5 -t 1.2

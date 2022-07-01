@@ -1,4 +1,5 @@
-var data = {
+var data =
+{
 
   "Without formant preservation":
   [
@@ -19,8 +20,8 @@ var data = {
       "args": "-q 0 -p 2"
     },
     {
-      "file": "https://www.dropbox.com/s/fogdk6cjin0kz8o/voice(-q 0 -p 1,1.5,2).wav?raw=1",
-      "args": "-q 0 -p 1,1.5,2"
+      "file": "https://www.dropbox.com/s/bx0wimlqpjxj4vd/voice(-q 0 -p 1,1.25,1.5).wav?raw=1",
+      "args": "-q 0 -p 1,1.25,1.5"
     },
   ],
 
@@ -43,20 +44,28 @@ var data = {
       "args": "-q 1 -p 2"
     },
     {
-      "file": "https://www.dropbox.com/s/43g5fhtaofzhm80/voice(-q 1 -p 1,1.5,2).wav?raw=1",
-      "args": "-q 1 -p 1,1.5,2"
+      "file": "https://www.dropbox.com/s/5ear5rex15ngry8/voice(-q 1 -p 1,1.25,1.5).wav?raw=1",
+      "args": "-q 1 -p 1,1.25,1.5"
     },
   ],
 
   "Timbre changing":
   [
     {
-      "file": "https://www.dropbox.com/s/xfxnyhaav95pti6/voice(-t -q 1 -p 0.8).wav?raw=1",
-      "args": "-t -q 1 -p 0.8"
+      "file": "https://www.dropbox.com/s/aqrqz59dpb24o97/voice(-q 1 -p 1 -t 0.8).wav?raw=1",
+      "args": "-q 1 -p 1 -t 0.8"
     },
     {
-      "file": "https://www.dropbox.com/s/kmbg2gkoishl8ke/voice(-t -q 1 -p 1.2).wav?raw=1",
-      "args": "-t -q 1 -p 1.2"
+      "file": "https://www.dropbox.com/s/538vip6ho482456/voice(-q 1 -p 1 -t 1.2).wav?raw=1",
+      "args": "-q 1 -p 1 -t 1.2"
+    },
+    {
+      "file": "https://www.dropbox.com/s/u7w1uj33upvyklv/voice(-q 1 -p 1,1.25,1.5 -t 0.8).wav?raw=1",
+      "args": "-q 1 -p 1,1.25,1.5 -t 0.8"
+    },
+    {
+      "file": "https://www.dropbox.com/s/mk8ulw8npnncyn2/voice(-q 1 -p 1,1.25,1.5 -t 1.2).wav?raw=1",
+      "args": "-q 1 -p 1,1.25,1.5 -t 1.2"
     },
   ],
 
