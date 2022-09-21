@@ -1,72 +1,173 @@
-var data =
-{
+let decoder;
 
+const examples =
+{
   "Without formant preservation":
   [
-    {
-      "file": "https://www.dropbox.com/s/14btzjic117ufe5/voice(-q 0 -p 0.5).wav?raw=1",
-      "args": "-q 0 -p 0.5"
-    },
-    {
-      "file": "https://www.dropbox.com/s/40ka4itm0fesndi/voice(-q 0 -p 0.75).wav?raw=1",
-      "args": "-q 0 -p 0.75"
-    },
-    {
-      "file": "https://www.dropbox.com/s/pnor344ix3cpilr/voice(-q 0 -p 1.5).wav?raw=1",
-      "args": "-q 0 -p 1.5"
-    },
-    {
-      "file": "https://www.dropbox.com/s/29mv81im7c97iub/voice(-q 0 -p 2).wav?raw=1",
-      "args": "-q 0 -p 2"
-    },
-    {
-      "file": "https://www.dropbox.com/s/bx0wimlqpjxj4vd/voice(-q 0 -p 1,1.25,1.5).wav?raw=1",
-      "args": "-q 0 -p 1,1.25,1.5"
-    },
+    "-q 0 -p 0.5",
+    "-q 0 -p 0.75",
+    "-q 0 -p 1.5",
+    "-q 0 -p 2",
+    "-q 0 -p 1,1.25,1.5"
   ],
-
   "With formant preservation":
   [
-    {
-      "file": "https://www.dropbox.com/s/0m9uo4eqkv7mwn1/voice(-q 1 -p 0.5).wav?raw=1",
-      "args": "-q 1 -p 0.5"
-    },
-    {
-      "file": "https://www.dropbox.com/s/6ng1z24kz18j7cp/voice(-q 1 -p 0.75).wav?raw=1",
-      "args": "-q 1 -p 0.75"
-    },
-    {
-      "file": "https://www.dropbox.com/s/qw9p3dbw9gkh6ra/voice(-q 1 -p 1.5).wav?raw=1",
-      "args": "-q 1 -p 1.5"
-    },
-    {
-      "file": "https://www.dropbox.com/s/pviz9bqp3d2a59u/voice(-q 1 -p 2).wav?raw=1",
-      "args": "-q 1 -p 2"
-    },
-    {
-      "file": "https://www.dropbox.com/s/5ear5rex15ngry8/voice(-q 1 -p 1,1.25,1.5).wav?raw=1",
-      "args": "-q 1 -p 1,1.25,1.5"
-    },
+    "-q 1 -p 0.5",
+    "-q 1 -p 0.75",
+    "-q 1 -p 1.5",
+    "-q 1 -p 2",
+    "-q 1 -p 1,1.25,1.5"
   ],
-
   "Timbre changing":
   [
-    {
-      "file": "https://www.dropbox.com/s/aqrqz59dpb24o97/voice(-q 1 -p 1 -t 0.8).wav?raw=1",
-      "args": "-q 1 -p 1 -t 0.8"
-    },
-    {
-      "file": "https://www.dropbox.com/s/538vip6ho482456/voice(-q 1 -p 1 -t 1.2).wav?raw=1",
-      "args": "-q 1 -p 1 -t 1.2"
-    },
-    {
-      "file": "https://www.dropbox.com/s/u7w1uj33upvyklv/voice(-q 1 -p 1,1.25,1.5 -t 0.8).wav?raw=1",
-      "args": "-q 1 -p 1,1.25,1.5 -t 0.8"
-    },
-    {
-      "file": "https://www.dropbox.com/s/mk8ulw8npnncyn2/voice(-q 1 -p 1,1.25,1.5 -t 1.2).wav?raw=1",
-      "args": "-q 1 -p 1,1.25,1.5 -t 1.2"
-    },
-  ],
-
+    "-q 1 -p 1 -t 0.8",
+    "-q 1 -p 1 -t 1.2",
+    "-q 1 -p 1,1.25,1.5 -t 0.8",
+    "-q 1 -p 1,1.25,1.5 -t 1.2"
+  ]
 };
+
+async function download(url)
+{
+  const response = await fetch(url);
+  const data = response.arrayBuffer();
+
+  return data;
+}
+
+function decode(wav)
+{
+  decoder = decoder || new AudioContext();
+  const buffer = decoder.decodeAudioData(wav);
+
+  return buffer;
+}
+
+function encode(buffer)
+{
+  const samplerate = buffer.sampleRate;
+  const channels = buffer.numberOfChannels;
+  const data = Array.from(new Array(channels), (i) => buffer.getChannelData(i));
+
+  const encoder = new WavAudioEncoder(samplerate, channels);
+  encoder.encode(data);
+  const wav = encoder.finish();
+
+  return wav;
+}
+
+function prebuild()
+{
+  const tasks = [];
+
+  const container = document.getElementById('container');
+
+  Object.keys(examples).forEach((category, i) =>
+  {
+    const title = document.createElement('h2');
+
+    title.classList.add('mb-4');
+
+    if (i > 0) {
+      title.classList.add('mt-5');
+    }
+
+    title.innerText = category;
+
+    container.appendChild(title);
+
+    const cards = document.createElement('div');
+
+    cards.classList.add('row', 'row-cols-1', 'row-cols-sm-1', 'row-cols-md-2', 'row-cols-lg-2', 'row-cols-xl-3', 'g-3');
+
+    examples[category].forEach((example, j) =>
+    {
+      const card = document.createElement('div');
+
+      card.classList.add('col');
+
+      card.innerHTML = [
+        `<div class="card shadow-sm">`,
+        `  <div class="card-body">`,
+        `    <div class="audio">`,
+        `      <audio id="output-${i}-${j}" src="" type="audio/wav"/>`,
+        `    </div>`,
+        `  </div>`,
+        `  <div class="card-footer">`,
+        `    <p class="card-text text-start text-muted"><samp>${example}</samp></p>`,
+        `  </div>`,
+        `</div>`
+      ].join('');
+
+      cards.appendChild(card);
+
+      tasks.push({
+        example: example,
+        i: i,
+        j: j
+      });
+
+    });
+
+    container.appendChild(cards);
+  });
+
+  return tasks;
+}
+
+function postbuild(input, tasks)
+{
+  function process(task)
+  {
+    const example = task.example;
+    const i = task.i;
+    const j = task.j;
+
+    console.debug(`Building example "${example}"`);
+
+    const output = shiftpitch(input, example);
+    const wav = encode(output);
+
+    const audio = document.getElementById(`output-${i}-${j}`);
+
+    if (audio.src) {
+      URL.revokeObjectURL(audio.src);
+    }
+
+    audio.src = URL.createObjectURL(wav);
+  }
+
+  function schedule(delay)
+  {
+    let task = tasks.shift();
+
+    if(!task) {
+      return;
+    }
+
+    setTimeout(() =>
+    {
+      process(task);
+
+      if(tasks.length) {
+        schedule(delay);
+      }
+    },
+    delay);
+  }
+
+  schedule(100);
+}
+
+function build(input)
+{
+  console.debug(`Processing`, input);
+
+  const tasks = prebuild();
+
+  setTimeout(() =>
+  {
+    postbuild(input, tasks);
+  },
+  100);
+}

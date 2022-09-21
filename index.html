@@ -3,12 +3,12 @@
 
   <head>
 
-    <title>stftPitchShift</title>
+    <title>stftPitchShift Demo</title>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/greghub/green-audio-player/dist/css/green-audio-player.min.css">
 
     <style>
@@ -39,13 +39,11 @@
             <div class="card shadow-sm mt-5">
               <div class="card-body">
                 <div class="audio">
-                  <audio>
-                    <source src="voice.wav" type="audio/wav"/>
-                  </audio>
+                  <audio id="input" src="voice.wav" type="audio/wav"/>
                 </div>
               </div>
               <div class="card-footer">
-                <p class="card-text text-start text-muted">origin</p>
+                <p class="card-text text-start text-muted">original record</p>
               </div>
             </div>
 
@@ -69,71 +67,38 @@
       </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/greghub/green-audio-player/dist/js/green-audio-player.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/higuma/wav-audio-encoder-js/lib/WavAudioEncoder.min.js"></script>
 
     <script src="index.js"></script>
 
-    <script>
-      function main() {
+    <script type="text/javascript">
 
-        var container = document.getElementById('container');
+      function main()
+      {
+        console.debug(`Loaded stftpitchshift v${shiftpitch_version()}`);
 
-        Object.keys(data).forEach(function (category, index) {
+        const input = document.getElementById('input');
 
-          var title = document.createElement('h2');
-
-          title.classList.add('mb-4');
-
-          if (index > 0) {
-            title.classList.add('mt-5');
-          }
-
-          title.innerText = category;
-
-          container.appendChild(title);
-
-          var cards = document.createElement('div');
-
-          cards.classList.add('row', 'row-cols-1', 'row-cols-sm-1', 'row-cols-md-2', 'row-cols-lg-2', 'row-cols-xl-3', 'g-3');
-
-          data[category].forEach(function (record) {
-
-            var card = document.createElement('div');
-
-            card.classList.add('col');
-
-            card.innerHTML = [
-              `<div class="card shadow-sm">`,
-              `  <div class="card-body">`,
-              `    <div class="audio">`,
-              `      <audio>`,
-              `        <source src="${record.file}" type="audio/wav"/>`,
-              `      </audio>`,
-              `    </div>`,
-              `  </div>`,
-              `  <div class="card-footer">`,
-              `    <p class="card-text text-start text-muted"><samp>${record.args}</samp></p>`,
-              `  </div>`,
-              `</div>`
-            ].join('');
-
-            cards.appendChild(card);
-
+        download(input.src).then(decode).then(build).then(() =>
+        {
+          GreenAudioPlayer.init({
+            selector: '.audio',
+            stopOthersOnPlay: true
           });
-
-          container.appendChild(cards);
-
         });
-
-        GreenAudioPlayer.init({
-          selector: '.audio',
-          stopOthersOnPlay: true
-        });
-
       }
-      document.addEventListener('DOMContentLoaded', main, false);
+
+      var Module = {
+        onRuntimeInitialized: main
+      };
+
+      // document.addEventListener('DOMContentLoaded', main, false);
+
     </script>
+
+    <script src="stftpitchshift.js"></script>
 
   </body>
 
