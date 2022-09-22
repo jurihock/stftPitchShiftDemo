@@ -67,7 +67,7 @@ function prebuild()
     `<div id="example" class="card shadow-sm example trans">`,
     `  <div class="card-body">`,
     `    <div class="audio">`,
-    `      <audio id="input" src="" type="audio/wav"/>`,
+    `      <audio id="input" src="" type="audio/wav"></audio>`,
     `    </div>`,
     `  </div>`,
     `  <div class="card-footer">`,
@@ -104,7 +104,7 @@ function prebuild()
         `<div id="example-${i}-${j}" class="card shadow-sm example trans">`,
         `  <div class="card-body">`,
         `    <div class="audio">`,
-        `      <audio id="output-${i}-${j}" src="" type="audio/wav"/>`,
+        `      <audio id="output-${i}-${j}" src="" type="audio/wav"></audio>`,
         `    </div>`,
         `  </div>`,
         `  <div class="card-footer">`,
@@ -131,6 +131,10 @@ function prebuild()
 
 function postbuild(input, tasks)
 {
+  requestAnimationFrame(() => {
+    document.getElementById('example').classList.remove('trans');
+  });
+
   function process(task)
   {
     const example = task.example;
@@ -185,9 +189,6 @@ function build()
   {
     console.debug('Processing', input);
 
-    requestAnimationFrame(() => {
-      document.getElementById('example').classList.remove('trans');
-
     const wav = encode(input);
 
     const audio = document.getElementById('input');
@@ -197,7 +198,6 @@ function build()
     }
 
     audio.src = URL.createObjectURL(wav);
-    });
 
     postbuild(input, tasks);
   });
