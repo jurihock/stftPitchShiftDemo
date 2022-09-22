@@ -56,6 +56,14 @@
       <div class="album py-5 bg-light">
         <div id="container" class="container">
 
+          <div id="wasm" class="card text-bg-warning text-center visually-hidden">
+            <div class="card-body pb-0">
+              <p>Unable to load the <em>stftPitchShift</em> WebAssembly module.</p>
+              <p>For more information about browser compatibility please refer to
+              <br><a href="https://webassembly.org/roadmap">https://webassembly.org/roadmap</a></p>
+            </div>
+          </div>
+
           <!-- output -->
 
         </div>
@@ -77,6 +85,17 @@
 
     <script type="text/javascript">
 
+      function wasm()
+      {
+        const ok = (typeof(WebAssembly) === 'object') && (typeof(WebAssembly).instantiate === 'function');
+
+        if (ok) {
+          return;
+        }
+
+        document.getElementById('wasm').classList.remove('visually-hidden');
+      }
+
       function main()
       {
         console.debug(`Loaded stftpitchshift v${shiftpitch_version()}`);
@@ -93,7 +112,7 @@
         onRuntimeInitialized: main
       };
 
-      // TODO document.addEventListener('DOMContentLoaded', main, false);
+      document.addEventListener('DOMContentLoaded', wasm, false);
 
     </script>
 
