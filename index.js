@@ -2,28 +2,28 @@ let decoder;
 
 const examples =
 {
-  "Without formant preservation":
+  'Without formant preservation':
   [
-    "-q 0 -p 0.5",
-    "-q 0 -p 0.75",
-    "-q 0 -p 1.5",
-    "-q 0 -p 2",
-    "-q 0 -p 1,1.25,1.5"
+    '-q 0 -p 0.5',
+    '-q 0 -p 0.75',
+    '-q 0 -p 1.5',
+    '-q 0 -p 2',
+    '-q 0 -p 1,1.25,1.5'
   ],
-  "With formant preservation":
+  'With formant preservation':
   [
-    "-q 1 -p 0.5",
-    "-q 1 -p 0.75",
-    "-q 1 -p 1.5",
-    "-q 1 -p 2",
-    "-q 1 -p 1,1.25,1.5"
+    '-q 1 -p 0.5',
+    '-q 1 -p 0.75',
+    '-q 1 -p 1.5',
+    '-q 1 -p 2',
+    '-q 1 -p 1,1.25,1.5'
   ],
-  "Timbre changing":
+  'Timbre changing':
   [
-    "-q 1 -p 1 -t 0.8",
-    "-q 1 -p 1 -t 1.2",
-    "-q 1 -p 1,1.25,1.5 -t 0.8",
-    "-q 1 -p 1,1.25,1.5 -t 1.2"
+    '-q 1 -p 1 -t 0.8',
+    '-q 1 -p 1 -t 1.2',
+    '-q 1 -p 1,1.25,1.5 -t 0.8',
+    '-q 1 -p 1,1.25,1.5 -t 1.2'
   ]
 };
 
