@@ -60,7 +60,21 @@ function prebuild()
 {
   const tasks = [];
 
+  const placeholder = document.getElementById('placeholder');
   const container = document.getElementById('container');
+
+  placeholder.innerHTML = [
+    `<div id="example" class="card shadow-sm example trans">`,
+    `  <div class="card-body">`,
+    `    <div class="audio">`,
+    `      <audio id="input" src="" type="audio/wav"/>`,
+    `    </div>`,
+    `  </div>`,
+    `  <div class="card-footer">`,
+    `    <p class="card-text text-start text-muted"><samp>original record</samp></p>`,
+    `  </div>`,
+    `</div>`
+  ].join('');
 
   Object.keys(examples).forEach((category, i) =>
   {
@@ -124,7 +138,7 @@ function postbuild(input, tasks)
     const j = task.j;
 
     requestAnimationFrame(() => {
-      document.getElementById(`example-${i}-${j}`).classList.remove(`trans`);
+      document.getElementById(`example-${i}-${j}`).classList.remove('trans');
     });
 
     console.debug(`Building example "${example}"`);
@@ -163,15 +177,28 @@ function postbuild(input, tasks)
   schedule(100);
 }
 
-function build(input)
+function build()
 {
-  console.debug(`Processing`, input);
-
   const tasks = prebuild();
 
-  setTimeout(() =>
+  download('voice.wav').then(decode).then((input) =>
   {
+    console.debug('Processing', input);
+
+    requestAnimationFrame(() => {
+      document.getElementById('example').classList.remove('trans');
+
+    const wav = encode(input);
+
+    const audio = document.getElementById('input');
+
+    if (audio.src) {
+      URL.revokeObjectURL(audio.src);
+    }
+
+    audio.src = URL.createObjectURL(wav);
+    });
+
     postbuild(input, tasks);
-  },
-  100);
+  });
 }

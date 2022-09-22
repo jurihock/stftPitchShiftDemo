@@ -22,7 +22,7 @@
         padding: 0;
       }
       .example {
-        transition: opacity 3000ms;
+        transition: opacity 1000ms;
         will-change: opacity;
       }
       .trans {
@@ -43,16 +43,7 @@
             <h1 class="fw-light">stftPitchShift <span class="text-muted">Demo</span></h1>
             <p class="lead text-muted">Short-Time Fourier Transform <br>based pitch and timbre shifting</p>
 
-            <div id="example" class="card shadow-sm mt-5 example trans">
-              <div class="card-body">
-                <div class="audio">
-                  <audio id="input" src="voice.wav" type="audio/wav"/>
-                </div>
-              </div>
-              <div class="card-footer">
-                <p class="card-text text-start text-muted">original record</p>
-              </div>
-            </div>
+            <div id="placeholder"/>
 
           </div>
         </div>
@@ -86,18 +77,11 @@
       {
         console.debug(`Loaded stftpitchshift v${shiftpitch_version()}`);
 
-        const input = document.getElementById('input');
+        build();
 
-        download(input.src).then(decode).then(build).then(() =>
-        {
-          GreenAudioPlayer.init({
-            selector: '.audio',
-            stopOthersOnPlay: true
-          });
-
-          requestAnimationFrame(() => {
-            document.getElementById(`example`).classList.remove(`trans`);
-          });
+        GreenAudioPlayer.init({
+          selector: '.audio',
+          stopOthersOnPlay: true
         });
       }
 
