@@ -87,7 +87,7 @@ function prebuild()
       card.classList.add('col');
 
       card.innerHTML = [
-        `<div class="card shadow-sm">`,
+        `<div id="example-${i}-${j}" class="card shadow-sm example trans">`,
         `  <div class="card-body">`,
         `    <div class="audio">`,
         `      <audio id="output-${i}-${j}" src="" type="audio/wav"/>`,
@@ -122,6 +122,10 @@ function postbuild(input, tasks)
     const example = task.example;
     const i = task.i;
     const j = task.j;
+
+    requestAnimationFrame(() => {
+      document.getElementById(`example-${i}-${j}`).classList.remove(`trans`);
+    });
 
     console.debug(`Building example "${example}"`);
 

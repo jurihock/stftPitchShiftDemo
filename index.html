@@ -21,6 +21,13 @@
         border: none;
         padding: 0;
       }
+      .example {
+        transition: opacity 3000ms;
+        will-change: opacity;
+      }
+      .trans {
+        opacity: 0.25;
+      }
     </style>
 
   </head>
@@ -36,7 +43,7 @@
             <h1 class="fw-light">stftPitchShift <span class="text-muted">Demo</span></h1>
             <p class="lead text-muted">Short-Time Fourier Transform <br>based pitch and timbre shifting</p>
 
-            <div class="card shadow-sm mt-5">
+            <div id="example" class="card shadow-sm mt-5 example trans">
               <div class="card-body">
                 <div class="audio">
                   <audio id="input" src="voice.wav" type="audio/wav"/>
@@ -87,6 +94,10 @@
             selector: '.audio',
             stopOthersOnPlay: true
           });
+
+          requestAnimationFrame(() => {
+            document.getElementById(`example`).classList.remove(`trans`);
+          });
         });
       }
 
@@ -94,7 +105,7 @@
         onRuntimeInitialized: main
       };
 
-      // document.addEventListener('DOMContentLoaded', main, false);
+      // TODO document.addEventListener('DOMContentLoaded', main, false);
 
     </script>
 
