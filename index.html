@@ -36,10 +36,10 @@
             <h1 class="fw-light">stftPitchShift <span class="text-muted">Demo</span></h1>
             <p class="lead text-muted">Short-Time Fourier Transform <br>based pitch and timbre shifting</p>
 
-            <div hidden id="hidden" class="card shadow-sm mt-5">
+            <div class="card shadow-sm mt-5">
               <div class="card-body">
                 <div class="audio">
-                  <audio id="input" src="voice.wav" type="audio/wav" />
+                  <audio id="input" src="voice.wav" type="audio/wav"/>
                 </div>
               </div>
               <div class="card-footer">
@@ -75,12 +75,7 @@
 
     <script type="text/javascript">
 
-      function ready()
-      {
-        document.getElementById('hidden').removeAttribute('hidden');
-      }
-
-      function go()
+      function main()
       {
         console.debug(`Loaded stftpitchshift v${shiftpitch_version()}`);
 
@@ -96,10 +91,10 @@
       }
 
       var Module = {
-        onRuntimeInitialized: go
+        onRuntimeInitialized: main
       };
 
-      document.addEventListener('DOMContentLoaded', ready, false);
+      // document.addEventListener('DOMContentLoaded', main, false);
 
     </script>
 
