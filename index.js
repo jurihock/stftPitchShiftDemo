@@ -131,8 +131,20 @@ function prebuild()
 
 function postbuild(input, tasks)
 {
+  console.debug('Processing', input);
+
+  const wav = encode(input);
+
+  const parent = document.getElementById('example');
+  const child = document.getElementById('input');
+
+  if (child.src) {
+    URL.revokeObjectURL(child.src);
+  }
+
   requestAnimationFrame(() => {
-    document.getElementById('example').classList.remove('trans');
+    child.src = URL.createObjectURL(wav);
+    parent.classList.remove('trans');
   });
 
   function process(task)
@@ -141,25 +153,25 @@ function postbuild(input, tasks)
     const i = task.i;
     const j = task.j;
 
-    requestAnimationFrame(() => {
-      document.getElementById(`example-${i}-${j}`).classList.remove('trans');
-    });
-
     console.debug(`Building example "${example}"`);
 
     const output = shiftpitch(input, example);
     const wav = encode(output);
 
-    const audio = document.getElementById(`output-${i}-${j}`);
+    const parent = document.getElementById(`example-${i}-${j}`);
+    const child = document.getElementById(`output-${i}-${j}`);
 
-    if (audio.src) {
-      URL.revokeObjectURL(audio.src);
+    if (child.src) {
+      URL.revokeObjectURL(child.src);
     }
 
-    audio.src = URL.createObjectURL(wav);
+    requestAnimationFrame(() => {
+      child.src = URL.createObjectURL(wav);
+      parent.classList.remove('trans');
+    });
   }
 
-  function schedule(delay)
+  function schedule()
   {
     let task = tasks.shift();
 
@@ -167,18 +179,32 @@ function postbuild(input, tasks)
       return;
     }
 
-    setTimeout(() =>
+    if ('requestIdleCallback' in window)
     {
-      process(task);
+      requestIdleCallback(() =>
+      {
+        process(task);
 
-      if(tasks.length) {
-        schedule(delay);
-      }
-    },
-    delay);
+        if(tasks.length) {
+          schedule();
+        }
+      });
+    }
+    else
+    {
+      setTimeout(() =>
+      {
+        process(task);
+
+        if(tasks.length) {
+          schedule();
+        }
+      },
+      100);
+    }
   }
 
-  schedule(100);
+  schedule();
 }
 
 function build()
@@ -187,18 +213,6 @@ function build()
 
   download('voice.wav').then(decode).then((input) =>
   {
-    console.debug('Processing', input);
-
-    const wav = encode(input);
-
-    const audio = document.getElementById('input');
-
-    if (audio.src) {
-      URL.revokeObjectURL(audio.src);
-    }
-
-    audio.src = URL.createObjectURL(wav);
-
     postbuild(input, tasks);
   });
 }
